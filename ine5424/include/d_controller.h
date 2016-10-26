@@ -9,7 +9,7 @@ class D
 {
 public:
 
-    D(double kd, double dt, double max, double min);
+    D(float kd, float dt, float max, float min);
 
     ~D();
 
@@ -18,21 +18,21 @@ public:
     * @param pv = process value read from a sensor
     * @return derivative result
     */
-    double calculate(double setpoint, double pv);
+    float calculate(float setpoint, float pv);
 
 private:
     // max/min output
-    double _max;
-    double _min;
+    float _max;
+    float _min;
 
     // ki -  Derivative gain
-    double _kd;
+    float _kd;
 
     // dt -  loop interval time
-    double _dt;
+    float _dt;
 
     // previous error
-    double _prev_error;
+    float _prev_error;
 };
 
 __END_SYS

@@ -6,7 +6,7 @@
 
 __BEGIN_SYS
 
-D::D(double kd, double dt, double max, double min){
+D::D(float kd, float dt, float max, float min){
 	_max = max;
 	_min = min;
 	_kd = kd;
@@ -16,23 +16,21 @@ D::D(double kd, double dt, double max, double min){
 
 D::~D() { }
 
-double D::calculate (double setpoint, double pv) {
+float D::calculate (float setpoint, float pv) {
 	db<D>(TRC) << "D::calculate" << endl;
 
 	// calculate error
-	double error = setpoint - pv;
+	float error = setpoint - pv;
 
     // Derivative term
-    double derivative = (error - _prev_error) / _dt;
-    double dOut = _kd * derivative;
+    float derivative = (error - _prev_error) / _dt;
+    float dOut = _kd * derivative;
 
 	// Restrict to max/min
-	if( dOut > _max ){
+	if (dOut > _max)
 	    dOut = _max;
-	}
-	else if( dOut < _min ){
+	else if (dOut < _min)
 	    dOut = _min;
-	}
 
 	_prev_error = error;
 

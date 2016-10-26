@@ -11,26 +11,28 @@ using namespace EPOS;
 
 int main()
 {
-    double output = 0;
-    double max = 70;
-    double min = -70;
-    cout << "setting values for variables kd, pv and setpoint" << endl;
-    double kd = 1.65;
-    double dt = 0.5;
-    double pv = 20;
-    double setpoint = 50;
+    float output = 0;
+    float max = 2;
+    float min = -2;
+    cout << "setting values for variables kp, ki, kd, pv and setpoint" << endl;
+    float kp = 1.6;
+    float ki = 1;
+    float kd = 1;
+    float dt = 0.02;
+    float pv = 0;
+    float setpoint = 1;
 
-    cout << "Initializing D controller" << endl;
-    P* pctrl = new P(kd, max, min);
-    I* ictrl = new I(kd, dt, max, min);
+    cout << "Initializing P, I and D controller" << endl;
+    P* pctrl = new P(kp, max, min);
+    I* ictrl = new I(ki, dt, max, min);
     D* dctrl = new D(kd, dt, max, min);
 
-    cout << "Calculating D output" << endl;
-    output += pctrl->calculate(setpoint, pv);
+    cout << "Calculating PID output" << endl;
+    output = pctrl->calculate(setpoint, pv);
     output += ictrl->calculate(setpoint, pv);
     output += dctrl->calculate(setpoint, pv);
 
-    cout << "Output calculated but I dont know how to show!" << endl;
+    cout << "output = " << output << endl;
 
     cout << "The end!" << endl;
 

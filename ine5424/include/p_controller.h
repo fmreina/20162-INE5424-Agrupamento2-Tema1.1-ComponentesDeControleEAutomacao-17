@@ -8,7 +8,7 @@ __BEGIN_SYS
 class P {
   public:
 
-    P(double kp, double max, double min);
+    P(float kp, float max, float min);
 
     ~P();
 
@@ -17,15 +17,15 @@ class P {
      * @param pv = process value read from a sensor
      * @return proportional result
      */
-    double calculate( double setpoint, double pv );
+    float calculate(float setpoint, float pv);
 
   private:
-    double _max;
-    double _min;
+    float _max;
+    float _min;
     // kp = proportional gain
-    double _kp;
+    float _kp;
     // previous error
-    double _prev_error;
+    float _prev_error;
 };
 
 __END_SYS

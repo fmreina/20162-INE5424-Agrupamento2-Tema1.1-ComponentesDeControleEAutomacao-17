@@ -9,7 +9,7 @@ class I
 {
 public:
 
-    I(double ki, double dt, double max, double min);
+    I(float ki, float dt, float max, float min);
 
     ~I();
 
@@ -18,21 +18,21 @@ public:
      * @param pv = process value read from a sensor
      * @return proportional result
      */
-    double calculate(double setpoint, double pv);
+    float calculate(float setpoint, float pv);
 
 private:
-    double _max;
-    double _min;
+    float _max;
+    float _min;
     // ki -  Integral gain
-    double _ki;
+    float _ki;
 
      // dt -  loop interval time
-    double _dt;
+    float _dt;
 
     // integral value
-    double _integral;
+    float _integral;
     // previous error
-    double _prev_error;
+    float _prev_error;
 };
 
 __END_SYS

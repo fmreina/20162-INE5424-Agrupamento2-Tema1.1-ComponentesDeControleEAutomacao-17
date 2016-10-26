@@ -5,7 +5,7 @@
 
 __BEGIN_SYS
 
-P::P(double kp, double max, double min){
+P::P(float kp, float max, float min){
 	_max = max;
 	_min = min;
 	_kp = kp;
@@ -14,22 +14,20 @@ P::P(double kp, double max, double min){
 
 P::~P() { }
 
-double P::calculate ( double setpoint, double pv ) {
+float P::calculate (float setpoint, float pv) {
 	db<P>(TRC) << "P::calculate" << endl;
 
 	// calculate error
-	double error = setpoint - pv;
+	float error = setpoint - pv;
 
 	// proportional result
-	double pOut = _kp * error;
+	float pOut = _kp * error;
 
 	// Restrict to max/min
-	if( pOut > _max ){
+	if (pOut > _max)
 	    pOut = _max;
-	}
-	else if( pOut < _min ){
+	else if (pOut < _min)
 	    pOut = _min;
-	}
 
 	_prev_error = error;
 

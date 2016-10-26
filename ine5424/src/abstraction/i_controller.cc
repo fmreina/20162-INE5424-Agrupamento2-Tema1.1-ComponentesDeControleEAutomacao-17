@@ -5,7 +5,7 @@
 
 __BEGIN_SYS
 
-I::I(double ki, double dt, double max, double min){
+I::I(float ki, float dt, float max, float min){
 	_max = max;
 	_min = min;
 	_ki = ki;
@@ -16,23 +16,21 @@ I::I(double ki, double dt, double max, double min){
 
 I::~I() { }
 
-double I::calculate (double setpoint, double pv) {
+float I::calculate (float setpoint, float pv) {
 	db<I>(TRC) << "I::calculate" << endl;
 
 	// calculate error
-	double error = setpoint - pv;
+	float error = setpoint - pv;
 
 	// Integral result
     _integral += error * _dt;
-    double iOut = _ki * _integral;
+    float iOut = _ki * _integral;
 
 	// Restrict to max/min
-	if( iOut > _max ){
+	if (iOut > _max)
 	    iOut = _max;
-	}
-	else if( iOut < _min ){
+	else if (iOut < _min)
 	    iOut = _min;
-	}
 
 	_prev_error = error;
 
