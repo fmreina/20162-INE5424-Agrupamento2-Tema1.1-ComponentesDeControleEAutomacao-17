@@ -2,6 +2,7 @@
 
 #include <utility/ostream.h>
 #include <controller.h>
+#include <controller_interface.h>
 #include <sensor_interface.h>
 #include <actuating_interface.h>
 
@@ -24,6 +25,7 @@ int main()
     float dt = 0.5;
     float pv = 20;
     float setpoint = 50;
+
     cout << "Setting values "
          << "\nkp=" << kp
          << "\nki=" << ki
@@ -39,7 +41,8 @@ int main()
   Actuating_Interface* actuating = new Actuating_Interface();
 
 	cout << "Initializing P controller!" << endl;
-	Controller* pctrl = new Controller(sensor, actuating, dt, &Controller::P, kp);
+	// Controller* pctrl = new Controller(sensor, actuating, dt, &Controller::P, kp);
+  Controller_Interface* _controller = new Controller_Interface(sensor, actuating, dt, &Controller::P, kp);
 
 	// cout << "Initializing I controller!" << endl;
 	// Controller* ictrl = new Controller(sensor, 10, dt, &Controller::I, ki, integral);
