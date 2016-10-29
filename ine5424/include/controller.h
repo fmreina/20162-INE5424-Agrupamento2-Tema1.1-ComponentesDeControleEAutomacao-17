@@ -1,6 +1,9 @@
 #ifndef __CONTROLLER_H_
 #define __CONTROLLER_H_
 
+#include <sensor_interface.h>
+#include <actuating_interface.h>
+
 __BEGIN_SYS
 
 class Controller
@@ -12,10 +15,13 @@ class Controller
 	 * the real implementation  must receive a real sensor and a real actuating
 	 */
 	template<typename ... Args>
-    Controller(int sensor, int actuating, float dt, void (* control)(Args... args), Args... args):
+    Controller(Sensor_Interface* sensor, Actuating_Interface* actuating, float dt, void (* control)(Args... args), Args... args):
     	_sensor(sensor),
     	_actuating(actuating),
-    	_dt(dt) { Run(control, args...); }
+    	_dt(dt) {
+        Run(control, args...);
+      }
+
     ~Controller();
 
     /*
@@ -26,8 +32,9 @@ class Controller
     	_control(args...);
     }
   protected:
-    int   _sensor,
-		  _actuating;
+    Sensor_Interface* _sensor;
+    Actuating_Interface*  _actuating;
+
     float _kp,
 		  _ki,
 		  _kd;
@@ -41,33 +48,40 @@ class Controller
     float _dt;
 
   public:
+
     // @params _kp
     void static P(float _kp) {
-    	db<Controller>(TRC) << "Controller::P(" << _kp << ")" <<endl;
+    	db<Controller>(WRN) << "Controller::P(" << _kp << ")" <<endl;
+      // Controller::_sensor->read();
     }
     // @params _ki, _integral
     void static I(float _ki, float _integral) {
-    	db<Controller>(TRC) << "Controller::I(" << _ki << "," << _integral << ")" <<endl;
+    	db<Controller>(WRN) << "Controller::I(" << _ki << "," << _integral << ")" <<endl;
+      // _sensor->read();
     }
     // @params _kd
     void static D(float _kd) {
-    	db<Controller>(TRC) << "Controller::I("  << _kd << ")" <<endl;
+    	db<Controller>(WRN) << "Controller::I("  << _kd << ")" <<endl;
+      // _sensor->read();
     }
     // @params _kp, _kd
-	void static PD(float _kp, float _kd) {
-		db<Controller>(TRC) << "Controller::PD(" << _kp << "," << _kd << ")" <<endl;
-	}
+  	void static PD(float _kp, float _kd) {
+  		db<Controller>(WRN) << "Controller::PD(" << _kp << "," << _kd << ")" <<endl;
+      // _sensor->read();
+  	}
     // @params _kp, _ki, integral
     void static PI(float _kp, float _ki, float _integral) {
-    	db<Controller>(TRC) << "Controller::PI(" << _kp << ","  << _ki << "," << _integral << ")" <<endl;
+    	db<Controller>(WRN) << "Controller::PI(" << _kp << ","  << _ki << "," << _integral << ")" <<endl;
+      // _sensor->read();
     }
     // @params _kp, _ki, _kd, integral
     void static PID(float _kp, float _ki, float _kd, float _integral) {
-    	db<Controller>(TRC) << "Controller::PID(" << _kp << "," << _ki << "," << _kd << "," << _integral << ")" <<endl;
+    	db<Controller>(WRN) << "Controller::PID(" << _kp << "," << _ki << "," << _kd << "," << _integral << ")" <<endl;
+      // _sensor->read();
     }
 //  protected:
 //    float static CalculateP(float kp, float setpoint, float pv) {
-//    	db<Controller>(TRC) << "CalculateP()::params (setpoint = " << setpoint << ", pv = " << pv << endl;
+//    	db<Controller>(WRN) << "CalculateP()::params (setpoint = " << setpoint << ", pv = " << pv << endl;
 //
 //    	// calculate error
 //    	float error = setpoint - pv;
@@ -84,7 +98,7 @@ class Controller
 //        return pOut;
 //    }
 //    float static CalculateI(float ki, float integral, float setpoint, float pv) {
-//        db<Controller>(TRC) << "CalculateI()::params (setpoint = " << setpoint << ", pv = " << pv << endl;
+//        db<Controller>(WRN) << "CalculateI()::params (setpoint = " << setpoint << ", pv = " << pv << endl;
 //
 //        // calculate error
 //        float error = setpoint - pv;
@@ -102,7 +116,7 @@ class Controller
 //        return iOut;
 //    }
 //    float static CalculateD(float kd, float setpoint, float pv) {
-//    	db<Controller>(TRC) << "CalculateD()::params (setpoint = " << setpoint << ", pv = " << pv << endl;
+//    	db<Controller>(WRN) << "CalculateD()::params (setpoint = " << setpoint << ", pv = " << pv << endl;
 //
 //    	// calculate error
 //    	float error = setpoint - pv;

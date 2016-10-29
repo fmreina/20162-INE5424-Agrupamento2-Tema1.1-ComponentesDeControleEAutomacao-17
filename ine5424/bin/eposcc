@@ -6,7 +6,7 @@
 #=========================================================================
 # PATHS
 #=========================================================================
-EPOS=/home/eduardo/Workspace/SOII/20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17/ine5424
+EPOS=/home/fabio/ufsc/so2/epos2/20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17/ine5424
 TMP=/tmp
 INC=$EPOS/include
 SRC=$EPOS/src
