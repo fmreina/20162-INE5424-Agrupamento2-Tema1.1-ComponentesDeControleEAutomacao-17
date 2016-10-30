@@ -2,9 +2,6 @@
 
 #include <utility/ostream.h>
 #include <controller.h>
-#include <controller_interface.h>
-#include <sensor_interface.h>
-#include <actuating_interface.h>
 
 using namespace EPOS;
 
@@ -35,21 +32,18 @@ int main()
          << "\nst=" << setpoint
     << endl;
 
-  cout << "Initializing Sensor!" << endl;
-  Sensor_Interface* sensor = new Sensor_Interface(10);
+  float sensor = 10;
+  float actuating = 10;
 
-  Actuating_Interface* actuating = new Actuating_Interface();
+  cout << "Initializing P controller!" << endl;
+	Controller* pctrl = new Controller(&Controller::P, sensor, actuating, setpoint, min, max, kp);
 
-	cout << "Initializing P controller!" << endl;
-	// Controller* pctrl = new Controller(sensor, actuating, dt, &Controller::P, kp);
-  Controller_Interface* _controller = new Controller_Interface(sensor, actuating, dt, &Controller::P, kp);
+	cout << "Initializing I controller!" << endl;
+	Controller* ictrl = new Controller(&Controller::I, sensor, actuating, setpoint, min, max, ki, dt, integral);
 
-	// cout << "Initializing I controller!" << endl;
-	// Controller* ictrl = new Controller(sensor, 10, dt, &Controller::I, ki, integral);
-  //
-	// cout << "Initializing D controller!" << endl;
-	// Controller* dctrl = new Controller(sensor, 10, dt, &Controller::D, kd);
-  //
+	cout << "Initializing D controller!" << endl;
+	Controller* dctrl = new Controller(&Controller::D, sensor, actuating, setpoint, min, max, kd, dt);
+
 	// cout << "Initializing PD controller!" << endl;
 	// Controller* pdctrl = new Controller(sensor, 10, dt, &Controller::PD, kp, kd);
   //
