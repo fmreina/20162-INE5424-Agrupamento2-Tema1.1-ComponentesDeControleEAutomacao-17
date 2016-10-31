@@ -44,14 +44,14 @@ int main()
 	cout << "Initializing D controller!" << endl;
 	Controller* dctrl = new Controller(&Controller::D, sensor, actuating, setpoint, min, max, kd, dt);
 
-	// cout << "Initializing PD controller!" << endl;
-	// Controller* pdctrl = new Controller(sensor, 10, dt, &Controller::PD, kp, kd);
-  //
-	// cout << "Initializing PI controller!" << endl;
-	// Controller* pictrl = new Controller(sensor, 10, dt, &Controller::PI, kp, ki, integral);
-  //
-	// cout << "Initializing PID controller!" << endl;
-	// Controller* pidctrl = new Controller(sensor, 10, dt, &Controller::PID, kp, ki, kd, integral);
+	cout << "Initializing PD controller!" << endl;
+	Controller* pdctrl = new Controller(&Controller::PD, sensor, actuating, setpoint, min, max, kp, kd, dt);
+
+	cout << "Initializing PI controller!" << endl;
+	Controller* pictrl = new Controller(&Controller::PI, sensor, actuating, setpoint, min, max, kp, ki, dt, integral);
+
+	cout << "Initializing PID controller!" << endl;
+	Controller* pidctrl = new Controller(&Controller::PID, sensor, actuating, setpoint, min, max, kp, ki, kd, dt, integral);
 
     cout << "output = " << output << endl;
 
