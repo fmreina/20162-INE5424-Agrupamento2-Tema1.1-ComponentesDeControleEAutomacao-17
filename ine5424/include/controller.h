@@ -58,14 +58,12 @@ class Controller
       float error = _setpoint - sensor;
       // proportional result
     	float output = _kp * error;
-      // Restrict to max/min
-    	if( output > _max ){
-    	    output = _max;
-      } else if( output < _min ){
-    	    output = _min;
-      }
 
-      // _prev_error = error;
+      output = Controller::checkLimits(output, _min, _max);
+
+      // FIXME: set _prev_error
+      //_prev_error = error;
+      // Controller::setPrevError(error);
       // actuating->act();
       return output;
     }
@@ -80,14 +78,9 @@ class Controller
       _integral += error * _dt;
       float output = _ki * _integral;
 
-    	// Restrict to max/min
-    	if( output > _max ){
-    	    output = _max;
-    	}
-    	else if( output < _min ){
-    	    output = _min;
-    	}
+    	output = Controller::checkLimits(output, _min, _max);
 
+      // FIXME: set _prev_error
     	//_prev_error = error;
       // actuating->act();
       return output;
@@ -105,30 +98,76 @@ class Controller
       derivative = error / _dt;
       double output = _kd * derivative;
 
-      // Restrict to max/min
-      if( output > _max ){
-          output = _max;
-      }
-      else if( output < _min ){
-          output = _min;
-      }
+      output = Controller::checkLimits(output, _min, _max);
 
+      // FIXME: set _prev_error
       // _prev_error = error;
       // actuating->act();
       return output;
     }
-    // // @params _kp, _kd
-  	// void static PD(float _kp, float _kd) {
-  	// 	db<Controller>(WRN) << "Controller::PD(" << _kp << "," << _kd << ")" <<endl;
-  	// }
-    // // @params _kp, _ki, integral
-    // void static PI(float _kp, float _ki, float _integral) {
-    // 	db<Controller>(WRN) << "Controller::PI(" << _kp << ","  << _ki << "," << _integral << ")" <<endl;
+
+    // @params sensor, actuating, _setpoint, _min, _max, _kp, _kd, _dt
+  	float static PD(float sensor, float actuating, float _setpoint, float _min, float _max, float _kp, float _kd, float _dt) {
+  		db<Controller>(WRN) << "Controller::PD(" << _kp << "," << _kd << ")" <<endl;
+
+      float pOut = Controller::P(sensor, actuating, _setpoint, _min, _max, _kp);
+      float dOut = Controller::D(sensor, actuating, _setpoint, _min, _max, _kd, _dt);
+
+      float output = pOut + dOut;
+
+      output = Controller::checkLimits(output, _min, _max);
+
+      return output;
+  	}
+
+    // @params sensor, actuating, _setpoint, _min, _max, _kp, _ki, _dt, _integral
+    float static PI(float sensor, float actuating, float _setpoint, float _min, float _max, float _kp, float _ki, float _dt, float _integral) {
+    	db<Controller>(WRN) << "Controller::PI(" << _kp << ","  << _ki << "," << _integral << ")" <<endl;
+
+      float pOut = Controller::P(sensor, actuating, _setpoint, _min, _max, _kp);
+      float iOut = Controller::I(sensor, actuating, _setpoint, _min, _max, _ki, _dt, _integral);
+
+      float output = pOut + iOut;
+
+      output = Controller::checkLimits(output, _min, _max);
+
+      return output;
+    }
+
+    // @params sensor, actuating, _setpoint, _min, _max, _kp, _ki, _kd, _dt, _integral
+    float static PID(float sensor, float actuating, float _setpoint, float _min, float _max, float _kp, float _ki, float _kd, float _dt, float _integral) {
+    	db<Controller>(WRN) << "Controller::PID(" << _kp << "," << _ki << "," << _kd << "," << _integral << ")" <<endl;
+
+      float pOut = Controller::P(sensor, actuating, _setpoint, _min, _max, _kp);
+      float iOut = Controller::I(sensor, actuating, _setpoint, _min, _max, _ki, _dt, _integral);
+      float dOut = Controller::D(sensor, actuating, _setpoint, _min, _max, _kd, _dt);
+
+      float output = pOut + iOut + dOut;
+
+      output = Controller::checkLimits(output, _min, _max);
+
+      return output;
+    }
+
+  private:
+    // void static setPrevError(float error){
+    //   Controller::_prev_error = error;
     // }
-    // // @params _kp, _ki, _kd, integral
-    // void static PID(float _kp, float _ki, float _kd, float _integral) {
-    // 	db<Controller>(WRN) << "Controller::PID(" << _kp << "," << _ki << "," << _kd << "," << _integral << ")" <<endl;
+    //
+    // float static getPrevError(){
+    //   return Controller::_prev_error;
     // }
+
+    float static checkLimits(float value, float min, float max){
+      // Restrict to max/min
+      if( value > max ){
+          value = max;
+      }
+      else if( value < min ){
+          value = min;
+      }
+      return value;
+    }
 };
 
 __END_SYS
