@@ -1,7 +1,7 @@
 #ifndef __CONTROLLER_H_
 #define __CONTROLLER_H_
 
-#include <sensor.h>
+//#include <periodic_thread.h>
 
 __BEGIN_SYS
 
@@ -14,157 +14,126 @@ class Controller
 	 * the real implementation  must receive a real sensor and a real actuating
 	 */
 	template<typename ... Args>
-    Controller(float (* control)(Args... args), Args... args)
-    {
-      Run(control, args...);
-    }
-
+    Controller(int sensor, int actuating, float max, float min, float setpoint, float dt, float (* control)(float, float, float, float, Args... args), Args... args):
+    	_sensor(sensor),
+    	_actuating(actuating),
+    	_max(max),
+    	_min(min),
+    	_setpoint(setpoint),
+    	_dt(dt)
+	{
+//		Periodic_Thread p_thread(RTConf(_dt * 1000, 1000), _control, args...);
+		Run(control, args...);
+	}
     ~Controller();
 
     /*
-     * Runs a periodic thread to calculate the specified control every 'dt' ms
+     * Runs from a periodic thread to calculate the specified control every 'dt' ms
      */
     template<typename ... Args>
-    void Run(float (* _control)(Args... args), Args... args) {
-      // float sensor_value = _sensor->read();
+    void Run(float (* _control)(float, float, float, float, Args... args), Args... args) {
+//    	float _pv = _sensor.read();
+    	float _pv = 0.6;
+    	_error = _setpoint - _pv;
+    	_integral += _error * _dt;
 
-      float _output = _control(args...);
+    	float result = _control(_error, _prev_error, _dt, _integral, args...);
 
-      // _actuating->act(15);
+    	if (result > _max)
+    		result = _max;
+		else if (result < _min)
+			result = _min;
+
+    	_prev_error = _error;
+
+//    	_actuating.set(result);
     }
   protected:
-    // float _sensor;
-    // float  _actuating;
+    int   _sensor,
+		  _actuating;
 
-    float _kp, _ki, _kd;
-
+    float _setpoint;
+    float _error;
+    float _integral;
     // max/min output
     float _max;
     float _min;
     // previous error
-    static float _prev_error;
+    float _prev_error;
     // dt -  loop interval time
     float _dt;
 
   public:
+    // @params _kp
+    float static P(float error, float prev_error, float dt, float integral, float kp) {
+    	db<Controller>(TRC) << "Controller::P(" << kp << ")" <<endl;
 
-    // @params sensor, actuating, setpoint, min, max, _kp
-    float static P(Sensor* sensor, float actuating, float _setpoint, float _min, float _max, float _kp) {
-    	db<Controller>(WRN) << "Controller::P(" << _kp << ")" <<endl;
-
-      // calculate error
-      float error = _setpoint - sensor->read();
-      // proportional result
-    	float output = _kp * error;
-
-      output = Controller::checkLimits(output, _min, _max);
-
-      // FIXME: set _prev_error
-      //_prev_error = error;
-      // Controller::setPrevError(error);
-      // actuating->act();
-      return output;
+    	CalculateP(error, kp);
+    	return 0;
     }
+    // @params _ki, _integral
+    float static I(float error, float prev_error, float dt, float integral, float ki) {
+    	db<Controller>(TRC) << "Controller::I(" << ki << "," << integral << ")" <<endl;
 
-    // @params sensor, actuating, setpoint, min, max, _ki, dt, _integral
-    float static I(Sensor* sensor, float actuating, float _setpoint, float _min, float _max, float _ki, float _dt, float _integral) {
-    	db<Controller>(WRN) << "Controller::I(" << _ki << "," << _integral << ")" <<endl;
-
-      // calculate error
-      float error = _setpoint - sensor->read();
-    	// Integral result
-      _integral += error * _dt;
-      float output = _ki * _integral;
-
-    	output = Controller::checkLimits(output, _min, _max);
-
-      // FIXME: set _prev_error
-    	//_prev_error = error;
-      // actuating->act();
-      return output;
+    	CalculateI(error, dt, ki, integral);
+    	return 0;
     }
+    // @params _kd
+    float static D(float error, float prev_error, float dt, float integral, float kd) {
+    	db<Controller>(TRC) << "Controller::I("  << kd << ")" <<endl;
 
-    // @params sensor, actuating, setpoint, min, max, _kd, dt
-    float static D(Sensor* sensor, float actuating, float _setpoint, float _min, float _max, float _kd, float _dt) {
-    	db<Controller>(WRN) << "Controller::D("  << _kd << ")" <<endl;
-
-      // calculate error
-      float error = _setpoint - sensor->read();
-      // Derivative term
-      // FIXME: use _prev_error
-      double derivative;// = (error - _prev_error) / _dt;
-      derivative = error / _dt;
-      double output = _kd * derivative;
-
-      output = Controller::checkLimits(output, _min, _max);
-
-      // FIXME: set _prev_error
-      // _prev_error = error;
-      // actuating->act();
-      return output;
+    	CalculateD(error, dt, prev_error, kd);
+    	return 0;
     }
+    // @params _kp, _kd
+    float static PD(float error, float prev_error, float dt, float integral, float kp, float kd) {
+		db<Controller>(TRC) << "Controller::PD(" << kp << "," << kd << ")" <<endl;
 
-    // @params sensor, actuating, _setpoint, _min, _max, _kp, _kd, _dt
-  	float static PD(Sensor* sensor, float actuating, float _setpoint, float _min, float _max, float _kp, float _kd, float _dt) {
-  		db<Controller>(WRN) << "Controller::PD(" << _kp << "," << _kd << ")" <<endl;
+		CalculateP(error, kp);
+		CalculateD(error, dt, prev_error, kd);
+    	return 0;
+	}
+    // @params _kp, _ki, integral
+    float static PI(float error, float prev_error, float dt, float integral, float kp, float ki) {
+    	db<Controller>(TRC) << "Controller::PI(" << kp << ","  << ki << "," << integral << ")" <<endl;
 
-      float pOut = Controller::P(sensor, actuating, _setpoint, _min, _max, _kp);
-      float dOut = Controller::D(sensor, actuating, _setpoint, _min, _max, _kd, _dt);
-
-      float output = pOut + dOut;
-
-      output = Controller::checkLimits(output, _min, _max);
-
-      return output;
-  	}
-
-    // @params sensor, actuating, _setpoint, _min, _max, _kp, _ki, _dt, _integral
-    float static PI(Sensor* sensor, float actuating, float _setpoint, float _min, float _max, float _kp, float _ki, float _dt, float _integral) {
-    	db<Controller>(WRN) << "Controller::PI(" << _kp << ","  << _ki << "," << _integral << ")" <<endl;
-
-      float pOut = Controller::P(sensor, actuating, _setpoint, _min, _max, _kp);
-      float iOut = Controller::I(sensor, actuating, _setpoint, _min, _max, _ki, _dt, _integral);
-
-      float output = pOut + iOut;
-
-      output = Controller::checkLimits(output, _min, _max);
-
-      return output;
+    	CalculateP(error, kp);
+    	CalculateI(error, dt, ki, integral);
+    	return 0;
     }
+    // @params _kp, _ki, _kd, integral
+    float static PID(float error, float prev_error, float dt, float integral, float kp, float ki, float kd) {
+    	db<Controller>(TRC) << "Controller::PID(" << kp << "," << ki << "," << kd << "," << integral << ")" <<endl;
 
-    // @params sensor, actuating, _setpoint, _min, _max, _kp, _ki, _kd, _dt, _integral
-    float static PID(Sensor* sensor, float actuating, float _setpoint, float _min, float _max, float _kp, float _ki, float _kd, float _dt, float _integral) {
-    	db<Controller>(WRN) << "Controller::PID(" << _kp << "," << _ki << "," << _kd << "," << _integral << ")" <<endl;
-
-      float pOut = Controller::P(sensor, actuating, _setpoint, _min, _max, _kp);
-      float iOut = Controller::I(sensor, actuating, _setpoint, _min, _max, _ki, _dt, _integral);
-      float dOut = Controller::D(sensor, actuating, _setpoint, _min, _max, _kd, _dt);
-
-      float output = pOut + iOut + dOut;
-
-      output = Controller::checkLimits(output, _min, _max);
-
-      return output;
+    	CalculateP(error, kp);
+    	CalculateI(error, dt, ki, integral);
+    	CalculateD(error, dt, prev_error, kd);
+    	return 0;
     }
+  protected:
+    float static CalculateP(float error, float kp) {
+    	db<Controller>(TRC) << "CalculateP(" << error << ", " << kp << ")" << endl;
 
-  private:
-    // void static setPrevError(float error){
-    //   Controller::_prev_error = error;
-    // }
-    //
-    // float static getPrevError(){
-    //   return Controller::_prev_error;
-    // }
+    	// proportional result
+    	float pOut = kp * error;
 
-    float static checkLimits(float value, float min, float max){
-      // Restrict to max/min
-      if( value > max ){
-          value = max;
-      }
-      else if( value < min ){
-          value = min;
-      }
-      return value;
+        return pOut;
+    }
+    float static CalculateI(float error, float dt, float ki, float integral) {
+        db<Controller>(TRC) << "CalculateI(" << error << ", " << ki << ", " << integral << endl;
+
+        float iOut = ki * integral;
+
+        return iOut;
+    }
+    float static CalculateD(float error, float dt, float prev_error, float kd) {
+    	db<Controller>(TRC) << "CalculateD(" << error << ", " << prev_error << ", " << kd << ")"<< endl;
+
+        // Derivative term
+        float derivative = (error - prev_error) / dt;
+        float dOut = kd * derivative;
+
+      return dOut;
     }
 };
 
