@@ -2,6 +2,7 @@
 
 #include <utility/ostream.h>
 #include <controller.h>
+#include <sensor.h>
 
 using namespace EPOS;
 
@@ -32,7 +33,7 @@ int main()
          << "\nst=" << setpoint
     << endl;
 
-  float sensor = 10;
+  Sensor* sensor = new Sensor(10);// = 10;
   float actuating = 10;
 
   cout << "Initializing P controller!" << endl;
@@ -41,17 +42,17 @@ int main()
 	cout << "Initializing I controller!" << endl;
 	Controller* ictrl = new Controller(&Controller::I, sensor, actuating, setpoint, min, max, ki, dt, integral);
 
-	cout << "Initializing D controller!" << endl;
-	Controller* dctrl = new Controller(&Controller::D, sensor, actuating, setpoint, min, max, kd, dt);
-
-	cout << "Initializing PD controller!" << endl;
-	Controller* pdctrl = new Controller(&Controller::PD, sensor, actuating, setpoint, min, max, kp, kd, dt);
-
-	cout << "Initializing PI controller!" << endl;
-	Controller* pictrl = new Controller(&Controller::PI, sensor, actuating, setpoint, min, max, kp, ki, dt, integral);
-
-	cout << "Initializing PID controller!" << endl;
-	Controller* pidctrl = new Controller(&Controller::PID, sensor, actuating, setpoint, min, max, kp, ki, kd, dt, integral);
+	// cout << "Initializing D controller!" << endl;
+	// Controller* dctrl = new Controller(&Controller::D, sensor, actuating, setpoint, min, max, kd, dt);
+  //
+	// cout << "Initializing PD controller!" << endl;
+	// Controller* pdctrl = new Controller(&Controller::PD, sensor, actuating, setpoint, min, max, kp, kd, dt);
+  //
+	// cout << "Initializing PI controller!" << endl;
+	// Controller* pictrl = new Controller(&Controller::PI, sensor, actuating, setpoint, min, max, kp, ki, dt, integral);
+  //
+	// cout << "Initializing PID controller!" << endl;
+	// Controller* pidctrl = new Controller(&Controller::PID, sensor, actuating, setpoint, min, max, kp, ki, kd, dt, integral);
 
     cout << "output = " << output << endl;
 
