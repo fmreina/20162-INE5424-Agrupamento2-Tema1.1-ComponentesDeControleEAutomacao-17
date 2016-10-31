@@ -11,7 +11,7 @@
 #define ARCH ia32
 #define MACH pc
 #define MMOD legacy_pc
-#define APPL pid_controller_test
+#define APPL parallel_philosophers_dinner
 #define __mode_library__
 #define __arch_ia32__
 #define __mach_pc__

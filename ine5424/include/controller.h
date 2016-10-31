@@ -1,6 +1,10 @@
 #ifndef __CONTROLLER_H_
 #define __CONTROLLER_H_
 
+// #include <sensor_interface.h>
+// #include <actuating_interface.h>
+// #include <controller_interface.h>
+
 __BEGIN_SYS
 
 class Controller
@@ -12,10 +16,17 @@ class Controller
 	 * the real implementation  must receive a real sensor and a real actuating
 	 */
 	template<typename ... Args>
-    Controller(int sensor, int actuating, float dt, void (* control)(Args... args), Args... args):
-    	_sensor(sensor),
-    	_actuating(actuating),
-    	_dt(dt) { Run(control, args...); }
+    Controller(void (* control)(Args... args), Args... args)
+    {
+      Run(control, args...);
+    }
+    // Controller(float sensor, Actuating_Interface* actuating, float dt, void (* control)(Args... args), Args... args):
+    // 	_sensor(sensor),
+    // 	_actuating(actuating),
+    // 	_dt(dt) {
+    //     Run(control, args...);
+    //   }
+
     ~Controller();
 
     /*
@@ -23,11 +34,17 @@ class Controller
      */
     template<typename ... Args>
     void Run(void (* _control)(Args... args), Args... args) {
-    	_control(args...);
+      // float sensor_value = _sensor->read();
+
+      _control(args...);
+
+      // _actuating->act(15);
     }
   protected:
-    int   _sensor,
-		  _actuating;
+    float _sensor;
+    float  _actuating;
+    // Controller_Interface* _controller;
+
     float _kp,
 		  _ki,
 		  _kd;
@@ -41,86 +58,33 @@ class Controller
     float _dt;
 
   public:
+
     // @params _kp
-    void static P(float _kp) {
-    	db<Controller>(TRC) << "Controller::P(" << _kp << ")" <<endl;
+    void static P(float sensor, float actuating, float _kp) {
+    	db<Controller>(WRN) << "Controller::P(" << _kp << ")" <<endl;
+      // actuating->act(15);
+      // _controller = new Controller_Interface()
     }
-    // @params _ki, _integral
-    void static I(float _ki, float _integral) {
-    	db<Controller>(TRC) << "Controller::I(" << _ki << "," << _integral << ")" <<endl;
-    }
-    // @params _kd
-    void static D(float _kd) {
-    	db<Controller>(TRC) << "Controller::I("  << _kd << ")" <<endl;
-    }
-    // @params _kp, _kd
-	void static PD(float _kp, float _kd) {
-		db<Controller>(TRC) << "Controller::PD(" << _kp << "," << _kd << ")" <<endl;
-	}
-    // @params _kp, _ki, integral
-    void static PI(float _kp, float _ki, float _integral) {
-    	db<Controller>(TRC) << "Controller::PI(" << _kp << ","  << _ki << "," << _integral << ")" <<endl;
-    }
-    // @params _kp, _ki, _kd, integral
-    void static PID(float _kp, float _ki, float _kd, float _integral) {
-    	db<Controller>(TRC) << "Controller::PID(" << _kp << "," << _ki << "," << _kd << "," << _integral << ")" <<endl;
-    }
-//  protected:
-//    float static CalculateP(float kp, float setpoint, float pv) {
-//    	db<Controller>(TRC) << "CalculateP()::params (setpoint = " << setpoint << ", pv = " << pv << endl;
-//
-//    	// calculate error
-//    	float error = setpoint - pv;
-//
-//    	// proportional result
-//    	float pOut = _kp * error;
-//
-//    	// Restrict to max/min
-//    	if (pOut > _max)
-//    	    pOut = _max;
-//    	else if (pOut < _min)
-//    	    pOut = _min;
-//
-//        return pOut;
-//    }
-//    float static CalculateI(float ki, float integral, float setpoint, float pv) {
-//        db<Controller>(TRC) << "CalculateI()::params (setpoint = " << setpoint << ", pv = " << pv << endl;
-//
-//        // calculate error
-//        float error = setpoint - pv;
-//
-//        // Integral result
-//        _integral += error * _dt;
-//        float iOut = _ki * _integral;
-//
-//        // Restrict to max/min
-//        if (iOut > _max)
-//            iOut = _max;
-//        else if (iOut < _min)
-//            iOut = _min;
-//
-//        return iOut;
-//    }
-//    float static CalculateD(float kd, float setpoint, float pv) {
-//    	db<Controller>(TRC) << "CalculateD()::params (setpoint = " << setpoint << ", pv = " << pv << endl;
-//
-//    	// calculate error
-//    	float error = setpoint - pv;
-//
-//        // Derivative term
-//        float derivative = (error - _prev_error) / _dt;
-//        float dOut = _kd * derivative;
-//
-//    	// Restrict to max/min
-//    	if (dOut > _max)
-//    	    dOut = _max;
-//    	else if (dOut < _min)
-//    	    dOut = _min;
-//
-//    	_prev_error = error;
-//
-//      return dOut;
-//    }
+    // // @params _ki, _integral
+    // void static I(float _ki, float _integral) {
+    // 	db<Controller>(WRN) << "Controller::I(" << _ki << "," << _integral << ")" <<endl;
+    // }
+    // // @params _kd
+    // void static D(float _kd) {
+    // 	db<Controller>(WRN) << "Controller::I("  << _kd << ")" <<endl;
+    // }
+    // // @params _kp, _kd
+  	// void static PD(float _kp, float _kd) {
+  	// 	db<Controller>(WRN) << "Controller::PD(" << _kp << "," << _kd << ")" <<endl;
+  	// }
+    // // @params _kp, _ki, integral
+    // void static PI(float _kp, float _ki, float _integral) {
+    // 	db<Controller>(WRN) << "Controller::PI(" << _kp << ","  << _ki << "," << _integral << ")" <<endl;
+    // }
+    // // @params _kp, _ki, _kd, integral
+    // void static PID(float _kp, float _ki, float _kd, float _integral) {
+    // 	db<Controller>(WRN) << "Controller::PID(" << _kp << "," << _ki << "," << _kd << "," << _integral << ")" <<endl;
+    // }
 };
 
 __END_SYS
