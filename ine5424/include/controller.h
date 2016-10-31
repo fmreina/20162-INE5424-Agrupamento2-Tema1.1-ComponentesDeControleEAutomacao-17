@@ -84,7 +84,7 @@ class Controller
 
     // @params sensor, actuating, setpoint, min, max, _kd, dt
     float static D(float sensor, float actuating, float _setpoint, float _min, float _max, float _kd, float _dt) {
-    	db<Controller>(WRN) << "Controller::I("  << _kd << ")" <<endl;
+    	db<Controller>(WRN) << "Controller::D("  << _kd << ")" <<endl;
 
       // calculate error
       float error = _setpoint - sensor;
