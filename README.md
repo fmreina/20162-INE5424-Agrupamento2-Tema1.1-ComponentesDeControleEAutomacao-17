@@ -3,7 +3,7 @@ Trabalho final da matéria de Sistemas Operacionais II.
 
 * ####Relatório para entrega de 01/11 em: [Google Docs] (https://docs.google.com/document/d/16eYw_w1bm3-xb4zV7cB2e5bX3gjFhLIdkE74u10BXgE/edit?usp=sharing)
 
-* Referência [EPOS]: (http://epos.lisha.ufsc.br/HomePage) => EPOS2 em: [teaching/ine5424](https://epos.lisha.ufsc.br/svn/teaching/ine5424/)
+* Referência [EPOS](http://epos.lisha.ufsc.br/HomePage) => EPOS2 em: [teaching/ine5424](https://epos.lisha.ufsc.br/svn/teaching/ine5424/)
 
 * Implementação inicial do controlador [PID] (https://github.com/fmreina/PIDController)
 
