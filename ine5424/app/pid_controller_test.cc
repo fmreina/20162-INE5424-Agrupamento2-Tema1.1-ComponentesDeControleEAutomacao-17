@@ -1,4 +1,4 @@
-// EPOS Scheduler Test Program
+// EPOS PID Controller Test Program
 
 #include <utility/ostream.h>
 #include <controller.h>
@@ -13,8 +13,8 @@ int main()
 {
     cout << ".:Proportional Integrative Derivative Controller Test:." << endl;
 
-    float max = 2;
-    float min = -1;
+    float max = 100;
+    float min = -100;
 
     float kd = 1.65;
     float ki = 1.65;

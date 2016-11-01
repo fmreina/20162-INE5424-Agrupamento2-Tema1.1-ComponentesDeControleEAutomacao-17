@@ -36,20 +36,20 @@ class Controller
   template<typename ... Args>
   void Run(float (* _control)(float, float, float, float, Args... args), Args... args) {
  	  float _pv = _sensor->read();
-  	// float _pv = 0.6;
+
   	_error = _setpoint - _pv;
   	_integral += _error * _dt;
 
-  	float result = _control(_error, _prev_error, _dt, _integral, args...);
+  	_result = _control(_error, _prev_error, _dt, _integral, args...);
 
-  	if (result > _max)
-  	  result = _max;
-	  else if (result < _min)
-		  result = _min;
+  	if (_result > _max)
+  	  _result = _max;
+	  else if (_result < _min)
+		  _result = _min;
 
   	_prev_error = _error;
 
- 	  _actuating->act(result);
+ 	  _actuating->act(_result);
   }
 
   protected:
@@ -66,6 +66,7 @@ class Controller
     float _prev_error;
     // dt -  loop interval time
     float _dt;
+    float _result;
 
   public:
     // @params _kp
@@ -148,6 +149,9 @@ class Controller
       return pOut + iOut + dOut;
     }
 
+    float get_result(){
+      return _result;
+    }
   protected:
     float static CalculateP(float error, float kp) {
     	db<Controller>(TRC) << "CalculateP(error=" << error << ",kp=" << kp << ")" << endl;
