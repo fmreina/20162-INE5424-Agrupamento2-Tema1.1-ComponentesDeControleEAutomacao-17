@@ -8,21 +8,30 @@ class Actuating
   public:
     Actuating()
     {
-        db<Actuating>(WRN) << "Actuating()" << endl;
+        db<Actuating>(TRC) << "Actuating()" << endl;
     }
 
     ~Actuating()
     {
-      db<Actuating>(WRN) << "~Actuating()" << endl;
+      db<Actuating>(TRC) << "~Actuating()" << endl;
     }
 
   private:
-
+    float _value;
   public:
     float act(float value){
-      db<Actuating>(WRN) << "Actuating::act("<< value <<")" << endl;
+      db<Actuating>(TRC) << "Actuating::act("<< value <<")" << endl;
+      _value = value;
       return value;
     }
+
+    /*
+     * read() only for testing pourpose. Not used in real implementation
+     */
+    float read(){
+	  db<Actuating>(TRC) << "Actuating::read()" << endl;
+	  return _value;
+	}
 };
 
 __END_SYS
