@@ -45,6 +45,7 @@ void runPDTest() {
 		pctrl->Run(&Controller::PD, kp, kd);
 		i++;
 	}
+	cout << endl;
 }
 
 void runPITest() {
@@ -77,6 +78,135 @@ void runPITest() {
 		pctrl->Run(&Controller::PI, kp, ki);
 		i++;
 	}
+	cout << endl;
+}
+
+void runPIDTest() {
+	float max = 100;
+	float min = -100;
+	float ki = 1.2;
+	float kp = 1.6;
+	float kd = 0.2;
+	float dt = 0.5;
+	float setpoint = 1;
+
+	Sensor* sensor = new Sensor(0);
+	Actuating* actuating = new Actuating();
+
+	cout << "Setting values "
+				<< "\nkp=" << kp
+				<< "\nki=" << ki
+				<< "\nkd=" << kd
+				<< "\ndt=" << dt
+				<< "\nst=" << setpoint
+				<< endl;
+
+	cout << "Initializing PID controller!" << endl;
+	Controller* pctrl = new Controller(sensor, actuating, max, min, setpoint, dt, &Controller::PID, kp, ki, kd);
+
+	float position = 0;
+	int i = 1;
+	while(!compare_floats(position, setpoint, 0.001f)) {
+		position += actuating->read() * 0.24;
+		sensor->set(position);
+		cout << "POSITION="<< position << ";\nITERATION=" << i << endl;
+		pctrl->Run(&Controller::PID, kp, ki, kd);
+		i++;
+	}
+	cout << endl;
+}
+
+void runPTest() {
+	float max = 100;
+	float min = -100;
+	float kp = 1.6;
+	float dt = 0.5;
+	float setpoint = 1;
+
+	Sensor* sensor = new Sensor(0);
+	Actuating* actuating = new Actuating();
+
+	cout << "Setting values "
+				<< "\nkp=" << kp
+				<< "\ndt=" << dt
+				<< "\nst=" << setpoint
+				<< endl;
+
+	cout << "Initializing P controller!" << endl;
+	Controller* pctrl = new Controller(sensor, actuating, max, min, setpoint, dt, &Controller::P, kp);
+
+	float position = 0;
+	int i = 1;
+	while(!compare_floats(position, setpoint, 0.001f)) {
+		position += actuating->read() * 0.24;
+		sensor->set(position);
+		cout << "POSITION="<< position << ";\nITERATION=" << i << endl;
+		pctrl->Run(&Controller::P, kp);
+		i++;
+	}
+	cout << endl;
+}
+
+void runITest() {
+	float max = 100;
+	float min = -100;
+	float ki = 1.2;
+	float dt = 0.5;
+	float setpoint = 1;
+
+	Sensor* sensor = new Sensor(0);
+	Actuating* actuating = new Actuating();
+
+	cout << "Setting values "
+				<< "\nki=" << ki
+				<< "\ndt=" << dt
+				<< "\nst=" << setpoint
+				<< endl;
+
+	cout << "Initializing I controller!" << endl;
+	Controller* pctrl = new Controller(sensor, actuating, max, min, setpoint, dt, &Controller::I, ki);
+
+	float position = 0;
+	int i = 1;
+	while(!compare_floats(position, setpoint, 0.001f)) {
+		position += actuating->read() * 0.24;
+		sensor->set(position);
+		cout << "POSITION="<< position << ";\nITERATION=" << i << endl;
+		pctrl->Run(&Controller::I, ki);
+		i++;
+	}
+	cout << endl;
+}
+
+void runDTest() {
+	float max = 100;
+	float min = -100;
+	float kd = 0.2;
+	float dt = 0.5;
+	float setpoint = 1;
+
+	Sensor* sensor = new Sensor(0);
+	Actuating* actuating = new Actuating();
+
+	cout << "Setting values "
+				<< "\nkd=" << kd
+				<< "\ndt=" << dt
+				<< "\nst=" << setpoint
+				<< endl;
+
+	cout << "Initializing D controller!" << endl;
+	Controller* pctrl = new Controller(sensor, actuating, max, min, setpoint, dt, &Controller::D, kd);
+
+	float position = 0;
+	int i = 1;
+	while(!compare_floats(position, setpoint, 0.001f)) {
+		position += actuating->read() * 0.24;
+		sensor->set(position);
+		cout << "POSITION="<< position << ";\nITERATION=" << i << endl;
+		pctrl->Run(&Controller::D, kd);
+		i++;
+	}
+	cout << endl;
 }
 
 int main()
@@ -85,6 +215,10 @@ int main()
 
 	runPDTest();
 	runPITest();
+	runPIDTest();
+	// runPTest();
+	// runITest();
+	// runDTest();
 
 	cout << "The end!" << endl;
 
