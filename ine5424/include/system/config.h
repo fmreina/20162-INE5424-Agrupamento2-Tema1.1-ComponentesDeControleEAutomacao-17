@@ -11,7 +11,7 @@
 #define ARCH ia32
 #define MACH pc
 #define MMOD legacy_pc
-#define APPL controller_unit_tests
+#define APPL pid_controller_test
 #define __mode_library__
 #define __arch_ia32__
 #define __mach_pc__
@@ -71,8 +71,8 @@ namespace EPOS {
 //============================================================================
 // ASSERT (for pre and post conditions)
 //============================================================================
-#define assert(expr)    ((expr) ? static_cast<void>(0) : Assert::fail (#expr, __FILE__, __LINE__, __PRETTY_FUNCTION__))
-// #define assert(expr)    (static_cast<void>(0))
+//#define assert(expr)    ((expr) ? static_cast<void>(0) : Assert::fail (#expr, __FILE__, __LINE__, __PRETTY_FUNCTION__))
+ #define assert(expr)    (static_cast<void>(0))
 
 //============================================================================
 // CONFIGURATION
