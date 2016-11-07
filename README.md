@@ -12,7 +12,7 @@ Trabalho final da matéria de Sistemas Operacionais II.
 * [x] RF02. Implementar a abstração de controlador de uma variável num sistema operacional (com realizações de pelo menos P, PD, PI, e PID)
 * [x] RF03. Criar testes unitários para cada controlador desenvolvido, respondendo a estímulos clássico, como o degrau unitário
 * [x] RF04. Avaliar cada controlador desenvolvido, mensurando parâmetros de reposta dos controladores, como estabilidade, desempenho no transitório e no regime
-* RF05. Implementar o controle de uma variável num sistema de malha fechada qualquer (ex: controle de iluminação)
+* [ ] RF05. Implementar o controle de uma variável num sistema de malha fechada qualquer (ex: controle de iluminação)
 * [x] RNF01. Os componentes devem ser implementados no sistema operacional EPOS 2
 
 #### - Modelo inicial
