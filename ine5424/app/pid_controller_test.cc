@@ -168,7 +168,8 @@ void runITest() {
 
 	float position = 0;
 	int i = 1;
-	while(!compare_floats(position, setpoint, 0.001f)) {
+	// while(!compare_floats(position, setpoint, 0.001f)) {
+	for(;i<51;){
 		position += actuating->read() * 0.24;
 		sensor->set(position);
 		cout << "POSITION="<< position << ";\nITERATION=" << i << endl;
@@ -199,7 +200,8 @@ void runDTest() {
 
 	float position = 0;
 	int i = 1;
-	while(!compare_floats(position, setpoint, 0.001f)) {
+	// while(!compare_floats(position, setpoint, 0.001f)) {
+	for(;i<51;){
 		position += actuating->read() * 0.24;
 		sensor->set(position);
 		cout << "POSITION="<< position << ";\nITERATION=" << i << endl;
@@ -213,12 +215,12 @@ int main()
 {
 	cout << ".:Proportional Integrative Derivative Controller Test:." << endl;
 
-	runPDTest();
+	runPTest();
 	runPITest();
+	runPDTest();
 	runPIDTest();
-	// runPTest();
-	// runITest();
-	// runDTest();
+	runITest();
+	runDTest();
 
 	cout << "The end!" << endl;
 
