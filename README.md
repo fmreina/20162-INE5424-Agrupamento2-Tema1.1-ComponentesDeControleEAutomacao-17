@@ -1,7 +1,7 @@
 # 20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17
 Trabalho final da matéria de Sistemas Operacionais II.
 
-* [x] ####Relatório para entrega de 01/11 em: [Google Docs] (https://docs.google.com/document/d/16eYw_w1bm3-xb4zV7cB2e5bX3gjFhLIdkE74u10BXgE/edit?usp=sharing)
+* ####Relatório para entrega de 01/11 em: [Google Docs] (https://docs.google.com/document/d/16eYw_w1bm3-xb4zV7cB2e5bX3gjFhLIdkE74u10BXgE/edit?usp=sharing)
 
 * Referência [EPOS](http://epos.lisha.ufsc.br/HomePage) => EPOS2 em: [teaching/ine5424](https://epos.lisha.ufsc.br/svn/teaching/ine5424/)
 
@@ -23,7 +23,7 @@ Trabalho final da matéria de Sistemas Operacionais II.
 
 #### - Modelo implementado
 decidiu-se implementar como indicado no modelo, no entando os métodos dos controladores seguem a ideia do modelo inicial, de forma que os controladores PI, PD e PID continuam sendo composições dos controladores P, I e D.
-![modeloImplementado](https://github.com/fmreina/20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17/blob/pTread/images/implementedModel.png)
+![modeloImplementado](https://github.com/fmreina/20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17/blob/pThread/images/implementedModel.png)
 
 ### - Avaliação dos controladores (resultado dos testes de pid_controller_test.cc)
 O desempenho dos controladores foram testados com os seguintes parametros:
@@ -33,9 +33,9 @@ O desempenho dos controladores foram testados com os seguintes parametros:
 * dt = 0.500
 * setpoint = 1.000
 
-![ptest](https://github.com/fmreina/20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17/blob/pTread/images/pController.png)
-![itest](https://github.com/fmreina/20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17/blob/pTread/images/iController.png)
-![dtest](https://github.com/fmreina/20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17/blob/pTread/images/dController.png)
-![pitest](https://github.com/fmreina/20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17/blob/pTread/images/piController.png)
-![pdtest](https://github.com/fmreina/20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17/blob/pTread/images/pdController.png)
-![pidtest](https://github.com/fmreina/20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17/blob/pTread/images/pidController.png)
+![ptest](https://github.com/fmreina/20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17/blob/pThread/images/pController.png)
+![itest](https://github.com/fmreina/20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17/blob/pThread/images/iController.png)
+![dtest](https://github.com/fmreina/20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17/blob/pThread/images/dController.png)
+![pitest](https://github.com/fmreina/20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17/blob/pThread/images/piController.png)
+![pdtest](https://github.com/fmreina/20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17/blob/pThread/images/pdController.png)
+![pidtest](https://github.com/fmreina/20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17/blob/pThread/images/pidController.png)
