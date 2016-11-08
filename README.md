@@ -1,7 +1,9 @@
 # 20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17
 Trabalho final da matéria de Sistemas Operacionais II.
 
-* ####Relatório para entrega de 01/11 em: [Google Docs] (https://docs.google.com/document/d/16eYw_w1bm3-xb4zV7cB2e5bX3gjFhLIdkE74u10BXgE/edit?usp=sharing)
+* ####Relatório para entrega de 08/11 em: [Google Docs : Final] (https://docs.google.com/document/d/1ogb7eUfPUyE0YE55DE1nte3eipcnUsg_0L54t7ti5BM/edit?usp=sharing)
+
+* Relatório para entrega de 01/11 em: [Google Docs : Parcial] (https://docs.google.com/document/d/16eYw_w1bm3-xb4zV7cB2e5bX3gjFhLIdkE74u10BXgE/edit?usp=sharing)
 
 * Referência [EPOS](http://epos.lisha.ufsc.br/HomePage) => EPOS2 em: [teaching/ine5424](https://epos.lisha.ufsc.br/svn/teaching/ine5424/)
 
