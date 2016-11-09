@@ -83,8 +83,24 @@ int main()
 {
 	cout << ".:Proportional Integrative Derivative Controller Test:." << endl;
 
-	runPDTest();
-	runPITest();
+//	runPDTest();
+//	runPITest();
+
+	float max = 100;
+	float min = -100;
+	float kd = 0.2;
+	float kp = 1.6;
+	float dt = 0.5;
+	float setpoint = 1;
+
+	Sensor* sensor = new Sensor(0);
+	Actuating* actuating = new Actuating();
+
+	cout << "Initializing PD controller!" << endl;
+	Controller* pctrl = new Controller(sensor, actuating, max, min, setpoint, dt, &Controller::PD, kp, kd);
+
+//	for(int i = 0; i < 100; i++)
+//		cout << "Doing other stuff" << endl;
 
 	cout << "The end!" << endl;
 

@@ -1,11 +1,15 @@
 #ifndef __CONTROLLER_H_
 #define __CONTROLLER_H_
 
-// #include <periodic_thread.h>
+#include <periodic_thread.h>
 #include <sensor.h>
 #include <actuating.h>
 
+
 __BEGIN_SYS
+
+template<typename ... Args>
+int controller(Args... args);
 
 class Controller
 {
@@ -29,17 +33,27 @@ public:
 	_error(0),
 	_prev_error(0)
 	{
-//		Periodic_Thread p_thread(RTConf(_dt * 1000, 1000), _control, args...);
-		Run(control, args...);
+		_control = control;
+		unpack(args...);
+
+		Periodic_Thread p_thread(RTConf(_dt * 1000, 100), &controller);
+
+		p_thread.join();
 	}
 
+
 	~Controller();
+
+	int controller() {
+		Run(_control, _first, _second, _third);
+		return 1;
+	}
 
 	/*
 	 * Runs from a periodic thread to calculate the specified control every 'dt' ms
 	 */
 	template<typename ... Args>
-	void Run(float (* _control)(float, float, float, float, Args... args), Args... args) {
+	int Run(float (* _control)(float, float, float, float, Args... args), Args... args) {
 		db<Controller>(TRC) << "Controller::Run()" << endl;
 		float _pv = _sensor->read();
 
@@ -58,12 +72,29 @@ public:
 		_prev_error = _error;
 
 		_actuating->act(_result);
+
+		return 0;
 	}
 
 protected:
+
+	template<typename ... Args>
+	void unpack(float first, float second = NULL, float third = NULL) {
+		_first = first;
+		_second = second;
+		_third = third;
+	}
+
+	template<typename ... Args>
+	struct TypeHelper{
+	    typedef float (*CONTROLLERFunc)(float, float, float, float, float, Args... args);
+	};
+
+	TypeHelper<float>::CONTROLLERFunc _control;
 	Sensor* _sensor;
 	Actuating* _actuating;
 
+	float _first, _second, _third;
 	float _setpoint;
 	float _error;
 	float _integral;
