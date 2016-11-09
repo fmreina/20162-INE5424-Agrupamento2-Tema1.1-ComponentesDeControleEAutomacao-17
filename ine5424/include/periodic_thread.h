@@ -118,8 +118,7 @@ public:
     }
 
 private:
-	template<typename ... Args>
-    static int entry(RT_Thread * t, void (*function)(Args... args), const Microsecond activation, int times, Args... args) {
+    static int entry(RT_Thread * t, void (*function)(), const Microsecond activation, int times) {
         if(activation) {
             // Wait for activation time
             t->_semaphore.p();
@@ -136,7 +135,7 @@ private:
 //                tick = Alarm::_elapsed + Alarm::ticks(t->criterion()._capacity);
 
             // Release job
-            function(args...);
+            function();
 
 //            if(Traits<Periodic_Thread>::simulate_capacity && t->criterion()._capacity)
 //                while(Alarm::_elapsed < tick);
