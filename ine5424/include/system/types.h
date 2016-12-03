@@ -154,6 +154,7 @@ class Active;
 class Periodic_Thread;
 class RT_Thread;
 class Task;
+class Controller;
 
 template<typename> class Scheduler;
 namespace Scheduling_Criteria
