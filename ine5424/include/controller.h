@@ -1,9 +1,6 @@
 #ifndef __CONTROLLER_H_
 #define __CONTROLLER_H_
 
-#include <periodic_thread.h>
-#include <sensor.h>
-#include <actuating.h>
 
 __BEGIN_SYS
 
@@ -11,8 +8,8 @@ class Controller
 {
 
 public:
-	Controller();
-	virtual ~Controller();
+	Controller() {};
+	virtual ~Controller() {};
 
 	void setSetPoint(float _st) { setpoint = _st; }
 	void setPointView(float _pv) { pointView = _pv; }
@@ -21,7 +18,7 @@ public:
 
 	float setpoint, pointView, error, dt, max, min;
 
-	virtual float calculate();
+	virtual float calculate() = 0;
 
 };
 
@@ -36,7 +33,7 @@ public:
 		setpoint = _st;
 		error = 0;
 	};
-	~P();
+	virtual ~P() {};
 
 	float kp;
 
@@ -44,7 +41,15 @@ public:
 		db<P>(TRC) << "P::calculate()" << endl;
 
 		error = setpoint - pointView;
-		return kp * error;
+
+		float _pOut = kp * error;
+
+		if(_pOut > max)
+			return max;
+		if(_pOut < min)
+			return min;
+
+		return _pOut;
 	}
 };
 
@@ -60,7 +65,7 @@ public:
 		dt = _dt;
 		error = 0;
 	};
-	~I();
+	virtual ~I() {};
 
 	float ki, integral;
 
@@ -70,7 +75,14 @@ public:
 		error = setpoint - pointView;
 		integral += error * dt;
 
-		return ki * error;
+		float _iOut = ki * error;
+
+		if(_iOut > max)
+			return max;
+		if(_iOut < min)
+			return min;
+
+		return _iOut;
 	}
 };
 
@@ -87,7 +99,7 @@ public:
 		dt = _dt;
 		error = 0;
 	};
-	~D();
+	virtual ~D() {};
 
 	float kd, derivative, prevError;
 
@@ -98,7 +110,13 @@ public:
 		derivative = (error - prevError) / dt;
 		prevError = error;
 
-		return kd * error;
+		float _dOut = kd * error;
+		if(_dOut > max)
+			return max;
+		if(_dOut < min)
+			return min;
+
+		return _dOut;
 	}
 };
 
@@ -115,7 +133,7 @@ public:
 		dt = _dt;
 		error = 0;
 	};
-	~PI();
+	virtual ~PI() {};
 
 	float kp, ki, integral;
 
@@ -125,7 +143,13 @@ public:
 		error = setpoint - pointView;
 		integral += error * dt;
 
-		return error * (kp + ki);
+		float _piOut = error * (kp + ki);
+		if(_piOut > max)
+			return max;
+		if(_piOut < min)
+			return min;
+
+		return _piOut;
 	}
 };
 
@@ -143,7 +167,7 @@ public:
 		dt = _dt;
 		error = 0;
 	};
-	~PD();
+	virtual ~PD() {};
 
 	float kp, kd, derivative, prevError;
 
@@ -154,7 +178,9 @@ public:
 		derivative = (error - prevError) / dt;
 		prevError = error;
 
-		return error * (kp + kd);
+		float _pdOut = error * (kp + kd);
+
+		return _pdOut > max ? max : _pdOut < min ? min : _pdOut;
 	}
 };
 
@@ -174,19 +200,24 @@ public:
 		dt = _dt;
 		error = 0;
 	};
-	~PID();
+	virtual ~PID() {};
 
 	float kp, ki, kd, integral, derivative, prevError;
 
 	float calculate() {
-		db<D>(TRC) << "P::calculate()" << endl;
+		db<D>(TRC) << "PID::calculate()" << endl;
 
 		error = setpoint - pointView;
 		integral += error * dt;
 		derivative = (error - prevError) / dt;
 		prevError = error;
 
-		return error * (kp + ki + kd);
+		float _pidOut = error * (kp + ki + kd);
+		if(_pidOut > max)
+			return max;
+		if(_pidOut < min)
+			return min;
+		return _pidOut;
 	}
 };
 
