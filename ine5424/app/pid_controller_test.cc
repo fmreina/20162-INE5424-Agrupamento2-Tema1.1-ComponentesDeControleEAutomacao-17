@@ -20,12 +20,13 @@ int main()
 	float kp = 1.6;
 	float dt = 0.5;
 	float setpoint = 1;
+	float pointView = 0;
 
 	Sensor* sensor = new Sensor(0);
 	Actuating* actuating = new Actuating();
 
 	cout << "Initializing PD controller!" << endl;
-	Controller* pctrl = new Controller(sensor, actuating, max, min, setpoint, dt, &Controller::PD, kp, kd);
+	Controller* pd = new PD(setpoint, pointView, dt, kp, kd);
 
 	cout << "The end!" << endl;
 
