@@ -7,6 +7,8 @@
 #include <i_controller.h>
 #include <d_controller.h>
 #include <pi_controller.h>
+#include <pd_controller.h>
+#include <pid_controller.h>
 #include <sensor.h>
 #include <actuating.h>
 
@@ -147,84 +149,83 @@ void runPITest() {
 	cout << endl;
 }
 
-// void runPDTest() {
-// 	float max = 100;
-// 	float min = -100;
-// 	float kd = 0.2;
-// 	float kp = 1.6;
-// 	float dt = 0.5;
-// 	float setpoint = 1;
-//
-// 	Sensor* sensor = new Sensor(0);
-// 	Actuating* actuating = new Actuating();
-//
-// 	cout << "Setting values "
-// 			<< "\nkp=" << kp
-// 			<< "\nkd=" << kd
-// 			<< "\ndt=" << dt
-// 			<< "\nst=" << setpoint
-// 			<< endl;
-//
-// 	cout << "Initializing PD controller!" << endl;
-// 	Controller22* pctrl = new Controller22(sensor, actuating, max, min, setpoint, dt, &Controller2::PD, kp, kd);
-//
-// 	float position = 0;
-// 	int i = 1;
-// 	while(!compare_floats(position, setpoint, 0.001f)) {
-// 		position += actuating->read() * 0.24;
-// 		sensor->set(position);
-// 		cout << "POSITION="<< position << ";\nIteration=" << i << endl;
-// 		pctrl->Run(&Controller2::PD, kp, kd);
-// 		i++;
-// 	}
-// 	cout << endl;
-// }
-//
+void runPDTest() {
+	float max = 100;
+	float min = -100;
+	float kd = 0.2;
+	float kp = 1.6;
+	float dt = 0.5;
+	float setpoint = 1;
 
-// void runPIDTest() {
-// 	float max = 100;
-// 	float min = -100;
-// 	float ki = 1.2;
-// 	float kp = 1.6;
-// 	float kd = 0.2;
-// 	float dt = 0.5;
-// 	float setpoint = 1;
-//
-// 	Sensor* sensor = new Sensor(0);
-// 	Actuating* actuating = new Actuating();
-//
-// 	cout << "Setting values "
-// 				<< "\nkp=" << kp
-// 				<< "\nki=" << ki
-// 				<< "\nkd=" << kd
-// 				<< "\ndt=" << dt
-// 				<< "\nst=" << setpoint
-// 				<< endl;
-//
-// 	cout << "Initializing PID controller!" << endl;
-// 	Controller2* pctrl = new Controller2(sensor, actuating, max, min, setpoint, dt, &Controller2::PID, kp, ki, kd);
-//
-// 	float position = 0;
-// 	int i = 1;
-// 	while(!compare_floats(position, setpoint, 0.001f)) {
-// 		position += actuating->read() * 0.24;
-// 		sensor->set(position);
-// 		cout << "POSITION="<< position << ";\nITERATION=" << i << endl;
-// 		pctrl->Run(&Controller2::PID, kp, ki, kd);
-// 		i++;
-// 	}
-// 	cout << endl;
-// }
-//
+	Sensor* sensor = new Sensor(0);
+	Actuating* actuating = new Actuating();
+
+	cout << "Setting values "
+			<< "\nkp=" << kp
+			<< "\nkd=" << kd
+			<< "\ndt=" << dt
+			<< "\nst=" << setpoint
+			<< endl;
+
+	cout << "Initializing PD controller!" << endl;
+	Controller2* pdctrl = new PD_controller(sensor, actuating, max, min, setpoint, dt, &PD_controller::PD, kp, kd);
+
+	float position = 0;
+	int i = 1;
+	while(!compare_floats(position, setpoint, 0.001f)) {
+		position += actuating->read() * 0.24;
+		sensor->set(position);
+		cout << "POSITION="<< position << ";\nIteration=" << i << endl;
+		pdctrl->Run(&PD_controller::PD, kp, kd);
+		i++;
+	}
+	cout << endl;
+}
+
+
+void runPIDTest() {
+	float max = 100;
+	float min = -100;
+	float ki = 1.2;
+	float kp = 1.6;
+	float kd = 0.2;
+	float dt = 0.5;
+	float setpoint = 1;
+
+	Sensor* sensor = new Sensor(0);
+	Actuating* actuating = new Actuating();
+
+	cout << "Setting values "
+				<< "\nkp=" << kp
+				<< "\nki=" << ki
+				<< "\nkd=" << kd
+				<< "\ndt=" << dt
+				<< "\nst=" << setpoint
+				<< endl;
+
+	cout << "Initializing PID controller!" << endl;
+	Controller2* pctrl = new PID_controller(sensor, actuating, max, min, setpoint, dt, &PID_controller::PID, kp, ki, kd);
+
+	float position = 0;
+	int i = 1;
+	while(!compare_floats(position, setpoint, 0.001f)) {
+		position += actuating->read() * 0.24;
+		sensor->set(position);
+		cout << "POSITION="<< position << ";\nITERATION=" << i << endl;
+		pctrl->Run(&PID_controller::PID, kp, ki, kd);
+		i++;
+	}
+	cout << endl;
+}
+
 int main()
 {
 	cout << ".:Proportional Integrative Derivative Controller2 Test:." << endl;
 
-	// runPTest();
+	runPTest();
 	// runITest();
 	// runDTest();
-	runPITest();
-
+	// runPITest();
 	// runPDTest();
 	// runPIDTest();
 

@@ -40,13 +40,13 @@ public:
 	 */
 	template<typename ... Args>
 	void Run(float (* _control)(float, float, float, float, Args... args), Args... args) {
-		db<Controller>(TRC) << "Controller::Run()" << endl;
+		db<Controller>(WRN) << "Controller::Run()" << endl;
 		float _pv = _sensor->read();
 
 		_error = _setpoint - _pv;
 		_integral += _error * _dt;
 
-		db<Controller>(TRC) << "_integral="<< _integral << endl;
+		db<Controller>(WRN) << "_integral="<< _integral << endl;
 
 		_result = _control(_error, _prev_error, _dt, _integral, args...);
 

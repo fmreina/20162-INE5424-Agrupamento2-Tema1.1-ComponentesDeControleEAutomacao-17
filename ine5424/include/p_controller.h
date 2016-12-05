@@ -29,7 +29,7 @@ class P_controller : public Controller2 {
     public:
       // @params _kp
     	float static P(float error, float prev_error, float dt, float integral, float kp) {
-    		db<P_controller>(WRN) << "P_controller::P(error=" << error
+    		db<P_controller>(TRC) << "P_controller::P(error=" << error
     				<< ",prev_error=" << prev_error
     				<< ",dt=" << dt
     				<< ",integral=" << integral
@@ -41,7 +41,7 @@ class P_controller : public Controller2 {
     // protected:
       //	@params: float error, float kp
       	float static CalculateP(float error, float kp) {
-      		db<P_controller>(WRN) << "CalculateP(error=" << error << ",kp=" << kp << ")" << endl;
+      		db<P_controller>(TRC) << "CalculateP(error=" << error << ",kp=" << kp << ")" << endl;
 
       		// proportional result
       		float pOut = kp * error;

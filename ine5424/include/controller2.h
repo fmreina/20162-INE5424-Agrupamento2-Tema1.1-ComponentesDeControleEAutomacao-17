@@ -54,41 +54,6 @@ protected:
 
 public:
 
-
-	// // @params _kp, _kd
-	// float static PD(float error, float prev_error, float dt, float integral, float kp, float kd) {
-	// 	db<Controller2>(TRC) << "Controller2::PD(error=" << error
-	// 			<< ",prev_error=" << prev_error
-	// 			<< ",dt=" << dt
-	// 			<< ",integral=" << integral
-	// 			<< ",kp=" << kp
-	// 			<< ",kd=" << kd << ")" <<endl;
-  //
-	// 	float pOut = CalculateP(error, kp);
-	// 	float dOut = CalculateD(error, dt, prev_error, kd);
-  //
-	// 	return pOut + dOut;
-	// }
-  //
-	
-  //
-	// // @params _kp, _ki, _kd
-	// float static PID(float error, float prev_error, float dt, float integral, float kp, float ki, float kd) {
-	// 	db<Controller2>(TRC) << "Controller2::PID(error=" << error
-	// 			<< ",prev_error=" << prev_error
-	// 			<< ",dt=" << dt
-	// 			<< ",integral=" << integral
-	// 			<< ",kp=" << kp
-	// 			<< ",ki=" << ki
-	// 			<< ",kd=" << kd << ")" <<endl;
-  //
-	// 	float pOut = CalculateP(error, kp);
-	// 	float iOut = CalculateI(error, dt, ki, integral);
-	// 	float dOut = CalculateD(error, dt, prev_error, kd);
-  //
-	// 	return pOut + iOut + dOut;
-	// }
-  //
 	float get_result(){
 		return _result;
 	}
@@ -98,34 +63,6 @@ public:
     _setpoint = value;
   }
 
-// protected:
-// //	@params: float error, float kp
-// 	float static CalculateP(float error, float kp) {
-// 		db<Controller2>(TRC) << "CalculateP(error=" << error << ",kp=" << kp << ")" << endl;
-//
-// 		// proportional result
-// 		float pOut = kp * error;
-//
-// 		return pOut;
-// 	}
-// //@params: float error, float dt, float ki, float integral
-// 	float static CalculateI(float error, float dt, float ki, float integral) {
-// 		db<Controller2>(TRC) << "CalculateI(error=" << error << ",ki=" << ki << ",integral=" << integral << endl;
-//
-// 		float iOut = ki * integral;
-//
-// 		return iOut;
-// 	}
-// //@params: float error, float dt, float prev_error, float kd
-// 	float static CalculateD(float error, float dt, float prev_error, float kd) {
-// 		db<Controller2>(TRC) << "CalculateD(error=" << error << ",prev_error=" << prev_error << ",kd=" << kd << ")"<< endl;
-//
-// 		// Derivative term
-// 		float derivative = (error - prev_error) / dt;
-// 		float dOut = kd * derivative;
-//
-// 		return dOut;
-// 	}
 };
 
 __END_SYS
