@@ -48,9 +48,6 @@ class PID_controller : public Controller2 {
     		return pOut + iOut + dOut;
     	}
 
-
-    protected:
-
 };
 
 __END_SYS

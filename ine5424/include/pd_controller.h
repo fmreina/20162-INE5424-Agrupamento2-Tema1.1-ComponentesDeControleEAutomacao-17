@@ -45,8 +45,6 @@ class PD_controller : public Controller2 {
     		return pOut + dOut;
     	}
 
-    protected:
-
 };
 
 __END_SYS

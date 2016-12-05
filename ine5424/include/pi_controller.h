@@ -45,9 +45,6 @@ class PI_controller : public Controller2 {
     		return pOut + iOut;
     	}
 
-
-    protected:
-
 };
 
 __END_SYS

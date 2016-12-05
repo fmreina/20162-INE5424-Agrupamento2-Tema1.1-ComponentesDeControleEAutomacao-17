@@ -39,8 +39,7 @@ class D_controller : public Controller2 {
     	}
 
 
-    // protected:
-    //@params: float error, float dt, float prev_error, float kd
+      //@params: float error, float dt, float prev_error, float kd
     	float static CalculateD(float error, float dt, float prev_error, float kd) {
     		db<D_controller>(TRC) << "CalculateD(error=" << error << ",prev_error=" << prev_error << ",kd=" << kd << ")"<< endl;
 

@@ -38,8 +38,6 @@ class I_controller : public Controller2 {
     		return CalculateI(error, dt, ki, integral);
     	}
 
-
-    // protected:
       //@params: float error, float dt, float ki, float integral
     	float static CalculateI(float error, float dt, float ki, float integral) {
     		db<I_controller>(WRN) << "CalculateI(error=" << error << ",ki=" << ki << ",integral=" << integral << endl;

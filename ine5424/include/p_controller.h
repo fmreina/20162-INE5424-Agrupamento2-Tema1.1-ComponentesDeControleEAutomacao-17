@@ -38,16 +38,15 @@ class P_controller : public Controller2 {
     		return CalculateP(error, kp);
     	}
 
-    // protected:
       //	@params: float error, float kp
-      	float static CalculateP(float error, float kp) {
-      		db<P_controller>(TRC) << "CalculateP(error=" << error << ",kp=" << kp << ")" << endl;
+    	float static CalculateP(float error, float kp) {
+    		db<P_controller>(TRC) << "CalculateP(error=" << error << ",kp=" << kp << ")" << endl;
 
-      		// proportional result
-      		float pOut = kp * error;
+    		// proportional result
+    		float pOut = kp * error;
 
-      		return pOut;
-      	}
+    		return pOut;
+    	}
 };
 
 __END_SYS
