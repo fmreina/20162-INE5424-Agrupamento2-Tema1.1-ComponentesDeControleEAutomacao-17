@@ -1,11 +1,11 @@
 #ifndef __D_controller_H_
 #define __D_controller_H_
 
-#include <controller2.h>
+#include <controller.h>
 
 __BEGIN_SYS
 
-class D_controller : public Controller2 {
+class D_controller : public Controller {
 
     public:
     	template<typename ... Args>

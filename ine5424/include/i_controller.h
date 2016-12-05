@@ -1,11 +1,11 @@
 #ifndef __I_CONTROLLER_H_
 #define __I_CONTROLLER_H_
 
-#include <controller2.h>
+#include <controller.h>
 
 __BEGIN_SYS
 
-class I_controller : public Controller2 {
+class I_controller : public Controller {
 
     public:
     	template<typename ... Args>
@@ -29,7 +29,7 @@ class I_controller : public Controller2 {
     public:
       // @params _ki
     	float static I(float error, float prev_error, float dt, float integral, float ki) {
-    		db<I_controller>(WRN) << "I_controller::I(error=" << error
+    		db<I_controller>(TRC) << "I_controller::I(error=" << error
     				<< ",prev_error=" << prev_error
     				<< ",dt=" << dt
     				<< ",integral=" << integral
@@ -40,7 +40,7 @@ class I_controller : public Controller2 {
 
       //@params: float error, float dt, float ki, float integral
     	float static CalculateI(float error, float dt, float ki, float integral) {
-    		db<I_controller>(WRN) << "CalculateI(error=" << error << ",ki=" << ki << ",integral=" << integral << endl;
+    		db<I_controller>(TRC) << "CalculateI(error=" << error << ",ki=" << ki << ",integral=" << integral << endl;
 
     		float iOut = ki * integral;
 

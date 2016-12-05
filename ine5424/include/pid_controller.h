@@ -1,14 +1,14 @@
 #ifndef __PID_controller_H_
 #define __PID_controller_H_
 
-#include <controller2.h>
+#include <controller.h>
 #include <p_controller.h>
 #include <i_controller.h>
 #include <d_controller.h>
 
 __BEGIN_SYS
 
-class PID_controller : public Controller2 {
+class PID_controller : public Controller {
 // class PD_controller : public P_controller, public I_controller, public D_controller {
 
     public:

@@ -1,13 +1,13 @@
 #ifndef __PI_controller_H_
 #define __PI_controller_H_
 
-#include <controller2.h>
+#include <controller.h>
 #include <p_controller.h>
 #include <i_controller.h>
 
 __BEGIN_SYS
 
-class PI_controller : public Controller2 {
+class PI_controller : public Controller {
 // class PI_controller : public P_controller, public I_controller {
 
     public:

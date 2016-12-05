@@ -155,6 +155,12 @@ class Periodic_Thread;
 class RT_Thread;
 class Task;
 class Controller;
+class P_controller;
+class I_controller;
+class D_controller;
+class PI_controller;
+class PD_controller;
+class PID_controller;
 
 template<typename> class Scheduler;
 namespace Scheduling_Criteria
