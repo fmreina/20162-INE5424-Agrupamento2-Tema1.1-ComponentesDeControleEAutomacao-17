@@ -44,12 +44,7 @@ public:
 
 		float _pOut = kp * error;
 
-		if(_pOut > max)
-			return max;
-		if(_pOut < min)
-			return min;
-
-		return _pOut;
+		return _pOut > max ? max : _pOut < min ? min : _pOut;
 	}
 };
 
@@ -77,12 +72,7 @@ public:
 
 		float _iOut = ki * integral;
 
-		if(_iOut > max)
-			return max;
-		if(_iOut < min)
-			return min;
-
-		return _iOut;
+		return _iOut > max ? max : _iOut < min ? min : _iOut;
 	}
 };
 
@@ -112,12 +102,7 @@ public:
 
 		float _dOut = kd * derivative;
 
-		if(_dOut > max)
-			return max;
-		if(_dOut < min)
-			return min;
-
-		return _dOut;
+	return _dOut > max ? max : _dOut < min ? min : _dOut;
 	}
 };
 
@@ -146,12 +131,7 @@ public:
 
 		float _piOut = (kp * error) + (ki * integral);
 
-		if(_piOut > max)
-			return max;
-		if(_piOut < min)
-			return min;
-
-		return _piOut;
+		return _piOut > max ? max : _piOut < min ? min : _piOut;
 	}
 };
 
@@ -216,11 +196,7 @@ public:
 
 		float _pidOut = (kp * error) + (ki * integral) + (kd * derivative);
 
-		if(_pidOut > max)
-			return max;
-		if(_pidOut < min)
-			return min;
-		return _pidOut;
+		return _pidOut > max ? max : _pidOut < min ? min : _pidOut;
 	}
 };
 
