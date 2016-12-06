@@ -155,6 +155,7 @@ class Periodic_Thread;
 class RT_Thread;
 class Task;
 class Controller;
+class Closed_Loop;
 
 template<typename> class Scheduler;
 namespace Scheduling_Criteria
