@@ -75,7 +75,7 @@ public:
 		error = setpoint - pointView;
 		integral += error * dt;
 
-		float _iOut = ki * error;
+		float _iOut = ki * integral;
 
 		if(_iOut > max)
 			return max;
@@ -110,7 +110,8 @@ public:
 		derivative = (error - prevError) / dt;
 		prevError = error;
 
-		float _dOut = kd * error;
+		float _dOut = kd * derivative;
+
 		if(_dOut > max)
 			return max;
 		if(_dOut < min)
@@ -143,7 +144,8 @@ public:
 		error = setpoint - pointView;
 		integral += error * dt;
 
-		float _piOut = error * (kp + ki);
+		float _piOut = (kp * error) + (ki * integral);
+
 		if(_piOut > max)
 			return max;
 		if(_piOut < min)
@@ -178,7 +180,7 @@ public:
 		derivative = (error - prevError) / dt;
 		prevError = error;
 
-		float _pdOut = error * (kp + kd);
+		float _pdOut = (kp * error) + (kd * derivative);
 
 		return _pdOut > max ? max : _pdOut < min ? min : _pdOut;
 	}
@@ -212,7 +214,8 @@ public:
 		derivative = (error - prevError) / dt;
 		prevError = error;
 
-		float _pidOut = error * (kp + ki + kd);
+		float _pidOut = (kp * error) + (ki * integral) + (kd * derivative);
+
 		if(_pidOut > max)
 			return max;
 		if(_pidOut < min)
