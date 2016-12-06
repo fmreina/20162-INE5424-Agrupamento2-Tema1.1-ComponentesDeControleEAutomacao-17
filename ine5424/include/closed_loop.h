@@ -4,7 +4,7 @@
 #include <sensor.h>
 #include <actuating.h>
 #include <controller.h>
-#include <periodic_thread.h>
+// #include <periodic_thread.h>
 
 __BEGIN_SYS
 
@@ -18,7 +18,7 @@ public:
 		sensor(_sensor),
 		actuating(_actuating),
 		controller(_controller),
-		dt(_dt) { }
+		dt(_dt) { };
 
 	virtual ~Closed_Loop();
 
@@ -27,20 +27,37 @@ public:
 	Controller* controller;
 	float pv, result, dt;
 
-	void startLoop() {
-	    Periodic_Thread p_thread(RTConf(dt * 1000, iterations), &Closed_Loop::run());
-		p_thread.join();
+	// void startLoop() {
+	//     Periodic_Thread p_thread(RTConf(dt * 1000, iterations), &Closed_Loop::run());
+	// 	p_thread.join();
+	// }
+	//
+	// int run() {
+	// 	db<Closed_Loop>(TRC) << "Closed_Loop::run()" << endl;
+	// 	for(int i = 0; i < iterations; i++) {
+	// 		Periodic_Thread::wait_next();
+	// 		pv = sensor->read();
+	// 		controller->setPointView(pv);
+	// 		result = controller->calculate();
+	// 		actuating->act(result);
+	// 	}
+	// 	return 0;
+	// }
+
+	bool compare_floats(float A, float B, float epsilon = 0.001f) {
+		return (abs(A - B) < epsilon);
 	}
 
 	int run() {
 		db<Closed_Loop>(TRC) << "Closed_Loop::run()" << endl;
-		for(int i = 0; i < iterations; i++) {
-			Periodic_Thread::wait_next();
+		do{
 			pv = sensor->read();
 			controller->setPointView(pv);
 			result = controller->calculate();
-			actuating->act(result);
-		}
+			float position = actuating->act(result) * 0.24;
+			sensor->set(position);
+			db<Closed_Loop>(WRN) << "result=" << result << endl;
+		} while(!compare_floats(result, controller->getSetPoint(), 0.001f));
 		return 0;
 	}
 };

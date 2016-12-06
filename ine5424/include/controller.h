@@ -15,6 +15,7 @@ public:
 	void setPointView(float _pv) { pointView = _pv; }
 	void setMax(float _max) { max = _max; }
 	void setMin(float _min) { min = _min; }
+	float getSetPoint(){ return setpoint; }
 
 	float setpoint, pointView, error, dt, max, min;
 
