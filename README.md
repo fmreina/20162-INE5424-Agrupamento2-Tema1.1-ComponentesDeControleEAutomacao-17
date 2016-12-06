@@ -30,7 +30,7 @@ decidiu-se implementar como indicado no modelo, no entando os métodos dos contr
 ![modeloImplementado](https://github.com/fmreina/20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17/blob/pThread/images/implementedModel.png)
 
 #### - Modelo Refatorado
-![modelorefatorado](https://github.com/fmreina/20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17/blob/pThread/images/refactoredModel.png)
+![modelorefatorado](https://github.com/fmreina/20162-INE5424-Agrupamento2-Tema1.1-ComponentesDeControleEAutomacao-17/blob/master/images/refactoredModel.png)
 
 ### - Avaliação dos controladores (resultado dos testes de pid_controller_test.cc)
 O desempenho dos controladores foram testados com os seguintes parametros:
