@@ -15,6 +15,7 @@ public:
 	void setPointView(float _pv) { pointView = _pv; }
 	void setMax(float _max) { max = _max; }
 	void setMin(float _min) { min = _min; }
+	float getSetPoint(){ return setpoint; }
 
 	float setpoint, pointView, error, dt, max, min;
 
@@ -109,7 +110,7 @@ public:
 class PI : public Controller
 {
 public:
-	PI(float _st, float _pv, float _dt, float _kp, float _ki) :
+	PI(float _pv, float _st, float _dt, float _kp, float _ki) :
 		kp(_kp),
 		ki(_ki),
 		integral(0)
@@ -138,7 +139,7 @@ public:
 class PD : public Controller
 {
 public:
-	PD(float _st, float _pv, float _dt, float _kp, float _kd) :
+	PD(float _pv, float _st, float _dt, float _kp, float _kd) :
 		kp(_kp),
 		kd(_kd),
 		derivative(0),
@@ -169,7 +170,7 @@ public:
 class PID : public Controller
 {
 public:
-	PID(float _st, float _pv, float _dt, float _kp, float _ki, float _kd) :
+	PID(float _pv, float _st, float _dt, float _kp, float _ki, float _kd) :
 		kp(_kp),
 		ki(_ki),
 		kd(_kd),
