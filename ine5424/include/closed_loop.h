@@ -10,29 +10,37 @@ __BEGIN_SYS
 
 class Closed_Loop
 {
+private:
+	const static int iterations = 100;
+
 public:
 	Closed_Loop(Sensor* _sensor, Actuating* _actuating, Controller* _controller, float _dt) :
 		sensor(_sensor),
 		actuating(_actuating),
-		controller(_controller)
-	{
-
-	    Periodic_Thread p_thread(RTConf(_dt * 1000, 100), &run);
-		p_thread.join();
-	}
+		controller(_controller),
+		dt(_dt) { }
 
 	virtual ~Closed_Loop();
 
 	Sensor* sensor;
 	Actuating* actuating;
 	Controller* controller;
-	float pv, result;
+	float pv, result, dt;
 
-	int run(void) {
-		pv = sensor->read();
-		controller->setPointView(pv);
-		result = controller->calculate();
-		actuating->act(result);
+	void startLoop() {
+	    Periodic_Thread p_thread(RTConf(dt * 1000, iterations), &Closed_Loop::run());
+		p_thread.join();
+	}
+
+	int run() {
+		db<Closed_Loop>(TRC) << "Closed_Loop::run()" << endl;
+		for(int i = 0; i < iterations; i++) {
+			Periodic_Thread::wait_next();
+			pv = sensor->read();
+			controller->setPointView(pv);
+			result = controller->calculate();
+			actuating->act(result);
+		}
 		return 0;
 	}
 };
